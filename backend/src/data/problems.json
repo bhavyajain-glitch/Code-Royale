@@ -1,26 +1,955 @@
 [
   {
     "id": 1,
-    "title": "Two Sum",
-    "description": "Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.",
-    "functionName": "two_sum",
-    "parameters": ["nums", "target"],
+    "title": "Check for Palindrome",
+    "description": "A palindrome is a sequence of characters (like numbers or letters) that reads the same forwards and backwards. For example, '121' and 'radar' are palindromes because they remain the same if you reverse them.",
+    "userTask": "Complete the function is_palindrome() that takes a positive integer N and returns True if it is a palindrome, otherwise False.",
+    "inputFormat": "A positive integer N.",
+    "outputFormat": "Return True if N is a palindrome, otherwise False.",
+    "examples": [
+      { "input": "121", "output": "True" },
+      { "input": "100", "output": "False" }
+    ],
+    "functionName": "is_palindrome",
+    "parameters": ["N"],
     "testCases": [
-        { "input": "[2, 7, 11, 15], 9", "output": "[0,1]" },
-        { "input": "[3, 2, 4], 6", "output": "[1,2]" },
-        { "input": "[3, 3], 6", "output": "[0,1]" }
+      { "input": "121", "output": "True" },
+      { "input": "100", "output": "False" },
+      { "input": "545", "output": "True" }
     ]
   },
   {
     "id": 2,
-    "title": "Reverse a String",
-    "description": "Write a function that reverses a string.",
-    "functionName": "reverse_string",
-    "parameters": ["input_str"],
+    "title": "Number of Ways to Select 3 Students",
+    "description": "You are given the marks of n students. Determine the number of ways to select three different students who have exactly the same marks. Two students are different if they have different indices. The order of selection does not matter.",
+    "userTask": "Complete countWaysToSelectThree(marks) that returns the number of ways to select three students with the same marks.",
+    "inputFormat": "A list of integers marks.",
+    "outputFormat": "Return the number of valid ways to choose three students with the same marks.",
+    "examples": [
+      { "input": "[10, 20, 10, 30, 10, 20]", "output": "1" },
+      { "input": "[10, 20, 10, 10, 20, 30, 30, 20, 20, 10, 30]", "output": "9" }
+    ],
+    "functionName": "countWaysToSelectThree",
+    "parameters": ["marks"],
     "testCases": [
-        { "input": "'hello'", "output": "olleh" },
-        { "input": "'world'", "output": "dlrow" },
-        { "input": "''", "output": "" }
+      { "input": "[10, 20, 10, 30, 10, 20]", "output": "1" },
+      { "input": "[10, 20, 10, 10, 20, 30, 30, 20, 20, 10, 30]", "output": "9" },
+      { "input": "[5,5,5,5]", "output": "4" },
+      { "input": "[1,2,3,4,5]", "output": "0" }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Sum of Digits",
+    "description": "Given a positive integer N, calculate the sum of all its digits. For example, sum of digits of 1234 is 10 (1+2+3+4).",
+    "userTask": "Complete sum_of_digits(N) that returns the sum of digits of N.",
+    "inputFormat": "A positive integer N.",
+    "outputFormat": "Return the sum of digits of N.",
+    "examples": [
+      { "input": "1234", "output": "10" },
+      { "input": "0", "output": "0" }
+    ],
+    "functionName": "sum_of_digits",
+    "parameters": ["N"],
+    "testCases": [
+      { "input": "1234", "output": "10" },
+      { "input": "0", "output": "0" },
+      { "input": "999", "output": "27" }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Check Prime Number",
+    "description": "A prime number is a number greater than 1 that has no positive divisors other than 1 and itself. Determine if a given integer N is prime.",
+    "userTask": "Complete is_prime(N) that returns True if N is prime, otherwise False.",
+    "inputFormat": "A positive integer N.",
+    "outputFormat": "Return True if N is prime, otherwise False.",
+    "examples": [
+      { "input": "7", "output": "True" },
+      { "input": "12", "output": "False" }
+    ],
+    "functionName": "is_prime",
+    "parameters": ["N"],
+    "testCases": [
+      { "input": "7", "output": "True" },
+      { "input": "12", "output": "False" },
+      { "input": "2", "output": "True" }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Count Vowels in a String",
+    "description": "Given a string S, count the number of vowels (a, e, i, o, u, both uppercase and lowercase) present in it.",
+    "userTask": "Complete count_vowels(S) that returns the number of vowels in S.",
+    "inputFormat": "A string S containing only letters.",
+    "outputFormat": "Return an integer representing the number of vowels in S.",
+    "examples": [
+      { "input": "hello", "output": "2" },
+      { "input": "WORLD", "output": "1" }
+    ],
+    "functionName": "count_vowels",
+    "parameters": ["S"],
+    "testCases": [
+      { "input": "hello", "output": "2" },
+      { "input": "WORLD", "output": "1" },
+      { "input": "aeiouAEIOU", "output": "10" }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Find Maximum in Array",
+    "description": "Given an array of integers, find and return the maximum element in the array.",
+    "userTask": "Complete find_maximum(arr) that returns the maximum element in arr.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return the maximum integer in arr.",
+    "examples": [
+      { "input": "[1,2,3,4,5]", "output": "5" },
+      { "input": "[10, -2, 33, 0]", "output": "33" }
+    ],
+    "functionName": "find_maximum",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,3,4,5]", "output": "5" },
+      { "input": "[10, -2, 33, 0]", "output": "33" },
+      { "input": "[-5,-1,-9]", "output": "-1" }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Reverse a String",
+    "description": "Given a string S, reverse the string and return it.",
+    "userTask": "Complete reverse_string(S) that returns the reversed string.",
+    "inputFormat": "A string S.",
+    "outputFormat": "Return the reversed string.",
+    "examples": [
+      { "input": "hello", "output": "olleh" },
+      { "input": "World", "output": "dlroW" }
+    ],
+    "functionName": "reverse_string",
+    "parameters": ["S"],
+    "testCases": [
+      { "input": "hello", "output": "olleh" },
+      { "input": "World", "output": "dlroW" },
+      { "input": "a", "output": "a" }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Calculate Factorial",
+    "description": "Given a non-negative integer N, calculate and return N! (factorial of N).",
+    "userTask": "Complete factorial(N) that returns the factorial of N.",
+    "inputFormat": "A non-negative integer N.",
+    "outputFormat": "Return an integer representing N!.",
+    "examples": [
+      { "input": "5", "output": "120" },
+      { "input": "0", "output": "1" }
+    ],
+    "functionName": "factorial",
+    "parameters": ["N"],
+    "testCases": [
+      { "input": "5", "output": "120" },
+      { "input": "0", "output": "1" },
+      { "input": "3", "output": "6" }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Fibonacci Number",
+    "description": "Given a non-negative integer N, return the N-th Fibonacci number. The Fibonacci sequence is defined as F(0)=0, F(1)=1, F(n)=F(n-1)+F(n-2).",
+    "userTask": "Complete fibonacci(N) that returns the N-th Fibonacci number.",
+    "inputFormat": "A non-negative integer N.",
+    "outputFormat": "Return the N-th Fibonacci number.",
+    "examples": [
+      { "input": "5", "output": "5" },
+      { "input": "10", "output": "55" }
+    ],
+    "functionName": "fibonacci",
+    "parameters": ["N"],
+    "testCases": [
+      { "input": "5", "output": "5" },
+      { "input": "10", "output": "55" },
+      { "input": "0", "output": "0" }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Count Even Numbers",
+    "description": "Given a list of integers, count the number of even numbers in the list.",
+    "userTask": "Complete count_even(arr) that returns the count of even numbers in arr.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return the count of even numbers.",
+    "examples": [
+      { "input": "[1,2,3,4,5]", "output": "2" },
+      { "input": "[2,4,6,8]", "output": "4" }
+    ],
+    "functionName": "count_even",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,3,4,5]", "output": "2" },
+      { "input": "[2,4,6,8]", "output": "4" },
+      { "input": "[1,3,5,7]", "output": "0" }
+    ]
+  },
+  {
+    "id": 11,
+    "title": "Find Minimum in Array",
+    "description": "Given an array of integers, find and return the minimum element in the array.",
+    "userTask": "Complete find_minimum(arr) that returns the minimum element in arr.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return the minimum integer in arr.",
+    "examples": [
+      { "input": "[1,2,3,4,5]", "output": "1" },
+      { "input": "[10,-2,33,0]", "output": "-2" }
+    ],
+    "functionName": "find_minimum",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,3,4,5]", "output": "1" },
+      { "input": "[10,-2,33,0]", "output": "-2" },
+      { "input": "[-5,-1,-9]", "output": "-9" }
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Reverse an Array",
+    "description": "Given an array of integers, return a new array with the elements in reverse order.",
+    "userTask": "Complete reverse_array(arr) that returns the reversed array.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return a list of integers in reverse order.",
+    "examples": [
+      { "input": "[1,2,3,4]", "output": "[4,3,2,1]" },
+      { "input": "[5,6]", "output": "[6,5]" }
+    ],
+    "functionName": "reverse_array",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,3,4]", "output": "[4,3,2,1]" },
+      { "input": "[5,6]", "output": "[6,5]" },
+      { "input": "[9]", "output": "[9]" }
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Count Odd Numbers",
+    "description": "Given a list of integers, count the number of odd numbers in the list.",
+    "userTask": "Complete count_odd(arr) that returns the count of odd numbers in arr.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return the count of odd numbers.",
+    "examples": [
+      { "input": "[1,2,3,4,5]", "output": "3" },
+      { "input": "[2,4,6,8]", "output": "0" }
+    ],
+    "functionName": "count_odd",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,3,4,5]", "output": "3" },
+      { "input": "[2,4,6,8]", "output": "0" },
+      { "input": "[1,3,5,7]", "output": "4" }
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Check Anagram",
+    "description": "Two strings are anagrams if they contain the same characters in a different order. Determine if two given strings S1 and S2 are anagrams.",
+    "userTask": "Complete is_anagram(S1, S2) that returns True if S1 and S2 are anagrams, otherwise False.",
+    "inputFormat": "Two strings S1 and S2.",
+    "outputFormat": "Return True if S1 and S2 are anagrams, otherwise False.",
+    "examples": [
+      { "input": "listen silent", "output": "True" },
+      { "input": "hello world", "output": "False" }
+    ],
+    "functionName": "is_anagram",
+    "parameters": ["S1","S2"],
+    "testCases": [
+      { "input": "listen silent", "output": "True" },
+      { "input": "hello world", "output": "False" },
+      { "input": "abc cab", "output": "True" }
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Count Occurrences of a Number",
+    "description": "Given a list of integers and a target integer X, count how many times X occurs in the list.",
+    "userTask": "Complete count_occurrences(arr, X) that returns the number of times X appears in arr.",
+    "inputFormat": "A list of integers arr and an integer X.",
+    "outputFormat": "Return the count of X in arr.",
+    "examples": [
+      { "input": "[1,2,3,2,4,2],2", "output": "3" },
+      { "input": "[5,5,5,5],5", "output": "4" }
+    ],
+    "functionName": "count_occurrences",
+    "parameters": ["arr","X"],
+    "testCases": [
+      { "input": "[1,2,3,2,4,2],2", "output": "3" },
+      { "input": "[5,5,5,5],5", "output": "4" },
+      { "input": "[1,2,3,4],10", "output": "0" }
+    ]
+  },
+  {
+    "id": 16,
+    "title": "Sum of Array Elements",
+    "description": "Given a list of integers, calculate the sum of all elements.",
+    "userTask": "Complete sum_array(arr) that returns the sum of elements in arr.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return the sum as an integer.",
+    "examples": [
+      { "input": "[1,2,3]", "output": "6" },
+      { "input": "[]", "output": "0" }
+    ],
+    "functionName": "sum_array",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,3]", "output": "6" },
+      { "input": "[]", "output": "0" },
+      { "input": "[5,-3,2]", "output": "4" }
+    ]
+  },
+  {
+    "id": 17,
+    "title": "Find Second Largest",
+    "description": "Given a list of integers, find and return the second largest element.",
+    "userTask": "Complete second_largest(arr) that returns the second largest element in arr.",
+    "inputFormat": "A list of integers arr (at least 2 elements).",
+    "outputFormat": "Return the second largest integer in arr.",
+    "examples": [
+      { "input": "[1,2,3,4,5]", "output": "4" },
+      { "input": "[10,10,20]", "output": "10" }
+    ],
+    "functionName": "second_largest",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,3,4,5]", "output": "4" },
+      { "input": "[10,10,20]", "output": "10" },
+      { "input": "[5,1]", "output": "1" }
+    ]
+  },
+  {
+    "id": 18,
+    "title": "Remove Duplicates",
+    "description": "Given a list of integers, remove duplicate elements and return the list of unique elements maintaining the original order.",
+    "userTask": "Complete remove_duplicates(arr) that returns a list of unique integers in order.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return a list of integers with duplicates removed.",
+    "examples": [
+      { "input": "[1,2,2,3,4,4,5]", "output": "[1,2,3,4,5]" },
+      { "input": "[1,1,1,1]", "output": "[1]" }
+    ],
+    "functionName": "remove_duplicates",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,2,3,4,4,5]", "output": "[1,2,3,4,5]" },
+      { "input": "[1,1,1,1]", "output": "[1]" },
+      { "input": "[5,4,3,2,1]", "output": "[5,4,3,2,1]" }
+    ]
+  },
+  {
+    "id": 19,
+    "title": "Find GCD",
+    "description": "Given two positive integers A and B, find and return their greatest common divisor (GCD).",
+    "userTask": "Complete find_gcd(A,B) that returns the GCD of A and B.",
+    "inputFormat": "Two positive integers A and B.",
+    "outputFormat": "Return an integer representing the GCD of A and B.",
+    "examples": [
+      { "input": "12,18", "output": "6" },
+      { "input": "7,5", "output": "1" }
+    ],
+    "functionName": "find_gcd",
+    "parameters": ["A","B"],
+    "testCases": [
+      { "input": "12,18", "output": "6" },
+      { "input": "7,5", "output": "1" },
+      { "input": "100,10", "output": "10" }
+    ]
+  },
+  {
+    "id": 20,
+    "title": "Find LCM",
+    "description": "Given two positive integers A and B, find and return their least common multiple (LCM).",
+    "userTask": "Complete find_lcm(A,B) that returns the LCM of A and B.",
+    "inputFormat": "Two positive integers A and B.",
+    "outputFormat": "Return an integer representing the LCM of A and B.",
+    "examples": [
+      { "input": "4,5", "output": "20" },
+      { "input": "6,8", "output": "24" }
+    ],
+    "functionName": "find_lcm",
+    "parameters": ["A","B"],
+    "testCases": [
+      { "input": "4,5", "output": "20" },
+      { "input": "6,8", "output": "24" },
+      { "input": "10,15", "output": "30" }
+    ]
+  },
+  {
+    "id": 21,
+    "title": "Power of a Number",
+    "description": "Given two integers A and B, calculate A raised to the power B (A^B).",
+    "userTask": "Complete power(A, B) that returns A raised to the power B.",
+    "inputFormat": "Two integers A and B.",
+    "outputFormat": "Return an integer representing A^B.",
+    "examples": [
+      { "input": "2,3", "output": "8" },
+      { "input": "5,0", "output": "1" }
+    ],
+    "functionName": "power",
+    "parameters": ["A","B"],
+    "testCases": [
+      { "input": "2,3", "output": "8" },
+      { "input": "5,0", "output": "1" },
+      { "input": "3,4", "output": "81" }
+    ]
+  },
+  {
+    "id": 22,
+    "title": "Check Perfect Square",
+    "description": "Given an integer N, determine whether it is a perfect square. A number is a perfect square if there exists an integer M such that M*M = N.",
+    "userTask": "Complete is_perfect_square(N) that returns True if N is a perfect square, otherwise False.",
+    "inputFormat": "An integer N.",
+    "outputFormat": "Return True if N is a perfect square, otherwise False.",
+    "examples": [
+      { "input": "16", "output": "True" },
+      { "input": "20", "output": "False" }
+    ],
+    "functionName": "is_perfect_square",
+    "parameters": ["N"],
+    "testCases": [
+      { "input": "16", "output": "True" },
+      { "input": "20", "output": "False" },
+      { "input": "0", "output": "True" }
+    ]
+  },
+  {
+    "id": 23,
+    "title": "Check Armstrong Number",
+    "description": "An Armstrong number is a number such that the sum of its digits raised to the power of the number of digits equals the number itself. Determine if a number N is an Armstrong number.",
+    "userTask": "Complete is_armstrong(N) that returns True if N is an Armstrong number, otherwise False.",
+    "inputFormat": "A positive integer N.",
+    "outputFormat": "Return True if N is an Armstrong number, otherwise False.",
+    "examples": [
+      { "input": "153", "output": "True" },
+      { "input": "123", "output": "False" }
+    ],
+    "functionName": "is_armstrong",
+    "parameters": ["N"],
+    "testCases": [
+      { "input": "153", "output": "True" },
+      { "input": "123", "output": "False" },
+      { "input": "9474", "output": "True" }
+    ]
+  },
+  {
+    "id": 24,
+    "title": "Count Words in a String",
+    "description": "Given a string S, count the number of words present in it. Words are separated by spaces.",
+    "userTask": "Complete count_words(S) that returns the number of words in S.",
+    "inputFormat": "A string S.",
+    "outputFormat": "Return an integer representing the number of words.",
+    "examples": [
+      { "input": "Hello world", "output": "2" },
+      { "input": "   This is a test   ", "output": "4" }
+    ],
+    "functionName": "count_words",
+    "parameters": ["S"],
+    "testCases": [
+      { "input": "Hello world", "output": "2" },
+      { "input": "   This is a test   ", "output": "4" },
+      { "input": "", "output": "0" }
+    ]
+  },
+  {
+    "id": 25,
+    "title": "Find Duplicate Elements",
+    "description": "Given a list of integers, return a list of elements that appear more than once.",
+    "userTask": "Complete find_duplicates(arr) that returns a list of duplicate elements in arr.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return a list of integers that are duplicates.",
+    "examples": [
+      { "input": "[1,2,2,3,3,3,4]", "output": "[2,3]" },
+      { "input": "[5,6,7]", "output": "[]" }
+    ],
+    "functionName": "find_duplicates",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,2,3,3,3,4]", "output": "[2,3]" },
+      { "input": "[5,6,7]", "output": "[]" },
+      { "input": "[1,1,1,1]", "output": "[1]" }
+    ]
+  },
+  {
+    "id": 26,
+    "title": "Check Leap Year",
+    "description": "Given an integer year, determine whether it is a leap year. A leap year is divisible by 4, but not by 100, except it is divisible by 400.",
+    "userTask": "Complete is_leap_year(year) that returns True if year is a leap year, otherwise False.",
+    "inputFormat": "An integer year.",
+    "outputFormat": "Return True if year is a leap year, otherwise False.",
+    "examples": [
+      { "input": "2000", "output": "True" },
+      { "input": "1900", "output": "False" }
+    ],
+    "functionName": "is_leap_year",
+    "parameters": ["year"],
+    "testCases": [
+      { "input": "2000", "output": "True" },
+      { "input": "1900", "output": "False" },
+      { "input": "2024", "output": "True" }
+    ]
+  },
+  {
+    "id": 27,
+    "title": "Sum of Even Numbers",
+    "description": "Given a list of integers, calculate the sum of all even numbers in the list.",
+    "userTask": "Complete sum_even(arr) that returns the sum of all even numbers in arr.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return the sum of all even numbers.",
+    "examples": [
+      { "input": "[1,2,3,4,5]", "output": "6" },
+      { "input": "[2,4,6]", "output": "12" }
+    ],
+    "functionName": "sum_even",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,3,4,5]", "output": "6" },
+      { "input": "[2,4,6]", "output": "12" },
+      { "input": "[1,3,5]", "output": "0" }
+    ]
+  },
+  {
+    "id": 28,
+    "title": "Sum of Odd Numbers",
+    "description": "Given a list of integers, calculate the sum of all odd numbers in the list.",
+    "userTask": "Complete sum_odd(arr) that returns the sum of all odd numbers in arr.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return the sum of all odd numbers.",
+    "examples": [
+      { "input": "[1,2,3,4,5]", "output": "9" },
+      { "input": "[2,4,6]", "output": "0" }
+    ],
+    "functionName": "sum_odd",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,3,4,5]", "output": "9" },
+      { "input": "[2,4,6]", "output": "0" },
+      { "input": "[1,3,5,7]", "output": "16" }
+    ]
+  },
+  {
+    "id": 29,
+    "title": "Find Index of Element",
+    "description": "Given a list of integers and a target value X, return the index of X in the list. If X is not present, return -1.",
+    "userTask": "Complete find_index(arr, X) that returns the index of X in arr or -1 if not found.",
+    "inputFormat": "A list of integers arr and an integer X.",
+    "outputFormat": "Return an integer index of X in arr or -1.",
+    "examples": [
+      { "input": "[1,2,3,4],3", "output": "2" },
+      { "input": "[5,6,7],10", "output": "-1" }
+    ],
+    "functionName": "find_index",
+    "parameters": ["arr","X"],
+    "testCases": [
+      { "input": "[1,2,3,4],3", "output": "2" },
+      { "input": "[5,6,7],10", "output": "-1" },
+      { "input": "[1,1,1],1", "output": "0" }
+    ]
+  },
+  {
+    "id": 30,
+    "title": "Check Divisibility",
+    "description": "Given two integers A and B, determine whether A is divisible by B.",
+    "userTask": "Complete is_divisible(A,B) that returns True if A is divisible by B, otherwise False.",
+    "inputFormat": "Two integers A and B.",
+    "outputFormat": "Return True if A is divisible by B, otherwise False.",
+    "examples": [
+      { "input": "10,2", "output": "True" },
+      { "input": "7,3", "output": "False" }
+    ],
+    "functionName": "is_divisible",
+    "parameters": ["A","B"],
+    "testCases": [
+      { "input": "10,2", "output": "True" },
+      { "input": "7,3", "output": "False" },
+      { "input": "0,5", "output": "True" }
+    ]
+  },
+  {
+    "id": 31,
+    "title": "Check Armstrong in Range",
+    "description": "Given two integers L and R, find all Armstrong numbers in the inclusive range [L, R].",
+    "userTask": "Complete armstrong_in_range(L,R) that returns a list of Armstrong numbers in the given range.",
+    "inputFormat": "Two integers L and R where L ≤ R.",
+    "outputFormat": "Return a list of integers which are Armstrong numbers between L and R.",
+    "examples": [
+      { "input": "150,160", "output": "[153]" },
+      { "input": "10,20", "output": "[]" }
+    ],
+    "functionName": "armstrong_in_range",
+    "parameters": ["L","R"],
+    "testCases": [
+      { "input": "150,160", "output": "[153]" },
+      { "input": "10,20", "output": "[]" },
+      { "input": "1,500", "output": "[1,2,3,4,5,6,7,8,9,153,370,371,407]" }
+    ]
+  },
+  {
+    "id": 32,
+    "title": "Find Median",
+    "description": "Given a list of integers, find the median. If the list has an even number of elements, return the average of the two middle elements.",
+    "userTask": "Complete find_median(arr) that returns the median of arr.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return a number representing the median.",
+    "examples": [
+      { "input": "[1,2,3]", "output": "2" },
+      { "input": "[1,2,3,4]", "output": "2.5" }
+    ],
+    "functionName": "find_median",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,3]", "output": "2" },
+      { "input": "[1,2,3,4]", "output": "2.5" },
+      { "input": "[5,1,3]", "output": "3" }
+    ]
+  },
+  {
+    "id": 33,
+    "title": "Check Strictly Increasing Array",
+    "description": "Given an array of integers, check if the array elements are in strictly increasing order.",
+    "userTask": "Complete is_strictly_increasing(arr) that returns True if arr is strictly increasing, otherwise False.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return True if arr is strictly increasing, otherwise False.",
+    "examples": [
+      { "input": "[1,2,3,4]", "output": "True" },
+      { "input": "[1,2,2,3]", "output": "False" }
+    ],
+    "functionName": "is_strictly_increasing",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,3,4]", "output": "True" },
+      { "input": "[1,2,2,3]", "output": "False" },
+      { "input": "[5,10,15]", "output": "True" }
+    ]
+  },
+  {
+    "id": 34,
+    "title": "Count Uppercase Letters",
+    "description": "Given a string, count the number of uppercase letters in it.",
+    "userTask": "Complete count_uppercase(S) that returns the count of uppercase letters in S.",
+    "inputFormat": "A string S.",
+    "outputFormat": "Return an integer representing the number of uppercase letters.",
+    "examples": [
+      { "input": "Hello World", "output": "2" },
+      { "input": "python", "output": "0" }
+    ],
+    "functionName": "count_uppercase",
+    "parameters": ["S"],
+    "testCases": [
+      { "input": "Hello World", "output": "2" },
+      { "input": "python", "output": "0" },
+      { "input": "ABCdefGHI", "output": "6" }
+    ]
+  },
+  {
+    "id": 35,
+    "title": "Count Lowercase Letters",
+    "description": "Given a string, count the number of lowercase letters in it.",
+    "userTask": "Complete count_lowercase(S) that returns the count of lowercase letters in S.",
+    "inputFormat": "A string S.",
+    "outputFormat": "Return an integer representing the number of lowercase letters.",
+    "examples": [
+      { "input": "Hello World", "output": "8" },
+      { "input": "PYTHON", "output": "0" }
+    ],
+    "functionName": "count_lowercase",
+    "parameters": ["S"],
+    "testCases": [
+      { "input": "Hello World", "output": "8" },
+      { "input": "PYTHON", "output": "0" },
+      { "input": "aBcDeF", "output": "3" }
+    ]
+  },
+  {
+    "id": 36,
+    "title": "Find Unique Elements",
+    "description": "Given a list of integers, return a list of elements that appear exactly once.",
+    "userTask": "Complete find_unique(arr) that returns a list of unique elements in arr.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return a list of integers that appear exactly once.",
+    "examples": [
+      { "input": "[1,2,2,3,4,4,5]", "output": "[1,3,5]" },
+      { "input": "[1,1,1]", "output": "[]" }
+    ],
+    "functionName": "find_unique",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,2,3,4,4,5]", "output": "[1,3,5]" },
+      { "input": "[1,1,1]", "output": "[]" },
+      { "input": "[5,6,7]", "output": "[5,6,7]" }
+    ]
+  },
+  {
+    "id": 37,
+    "title": "Check Perfect Number",
+    "description": "A perfect number is a positive integer that is equal to the sum of its proper divisors (excluding itself). Determine if a number N is perfect.",
+    "userTask": "Complete is_perfect_number(N) that returns True if N is perfect, otherwise False.",
+    "inputFormat": "A positive integer N.",
+    "outputFormat": "Return True if N is perfect, otherwise False.",
+    "examples": [
+      { "input": "6", "output": "True" },
+      { "input": "28", "output": "True" }
+    ],
+    "functionName": "is_perfect_number",
+    "parameters": ["N"],
+    "testCases": [
+      { "input": "6", "output": "True" },
+      { "input": "28", "output": "True" },
+      { "input": "12", "output": "False" }
+    ]
+  },
+  {
+    "id": 38,
+    "title": "Sum of Digits in Range",
+    "description": "Given a range of integers [L,R], calculate the sum of digits for all numbers in the range.",
+    "userTask": "Complete sum_digits_in_range(L,R) that returns the total sum of digits for all numbers between L and R inclusive.",
+    "inputFormat": "Two integers L and R, L ≤ R.",
+    "outputFormat": "Return an integer representing the total sum of digits.",
+    "examples": [
+      { "input": "10,12", "output": "6" },
+      { "input": "5,7", "output": "18" }
+    ],
+    "functionName": "sum_digits_in_range",
+    "parameters": ["L","R"],
+    "testCases": [
+      { "input": "10,12", "output": "6" },
+      { "input": "5,7", "output": "18" },
+      { "input": "0,3", "output": "6" }
+    ]
+  },
+  {
+    "id": 39,
+    "title": "Reverse Words in a String",
+    "description": "Given a string containing multiple words, reverse the order of words while keeping the words themselves intact.",
+    "userTask": "Complete reverse_words(S) that returns the string with words reversed.",
+    "inputFormat": "A string S.",
+    "outputFormat": "Return a string with words in reverse order.",
+    "examples": [
+      { "input": "Hello world", "output": "world Hello" },
+      { "input": "The quick brown fox", "output": "fox brown quick The" }
+    ],
+    "functionName": "reverse_words",
+    "parameters": ["S"],
+    "testCases": [
+      { "input": "Hello world", "output": "world Hello" },
+      { "input": "The quick brown fox", "output": "fox brown quick The" },
+      { "input": "single", "output": "single" }
+    ]
+  },
+  {
+    "id": 40,
+    "title": "Sum of Squares",
+    "description": "Given a list of integers, calculate the sum of squares of all elements.",
+    "userTask": "Complete sum_of_squares(arr) that returns the sum of squares of integers in arr.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return an integer representing the sum of squares.",
+    "examples": [
+      { "input": "[1,2,3]", "output": "14" },
+      { "input": "[0,4]", "output": "16" }
+    ],
+    "functionName": "sum_of_squares",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[1,2,3]", "output": "14" },
+      { "input": "[0,4]", "output": "16" },
+      { "input": "[5,5]", "output": "50" }
+    ]
+  },
+  {
+    "id": 41,
+    "title": "Check Prime Number",
+    "description": "Given a positive integer N, determine whether it is a prime number. A prime number is greater than 1 and divisible only by 1 and itself.",
+    "userTask": "Complete is_prime(N) that returns True if N is prime, otherwise False.",
+    "inputFormat": "A positive integer N.",
+    "outputFormat": "Return True if N is prime, otherwise False.",
+    "examples": [
+      { "input": "7", "output": "True" },
+      { "input": "10", "output": "False" }
+    ],
+    "functionName": "is_prime",
+    "parameters": ["N"],
+    "testCases": [
+      { "input": "7", "output": "True" },
+      { "input": "10", "output": "False" },
+      { "input": "2", "output": "True" }
+    ]
+  },
+  {
+    "id": 42,
+    "title": "Fibonacci Number",
+    "description": "Given an integer N, return the N-th Fibonacci number. Fibonacci sequence is defined as F(0)=0, F(1)=1, and F(n)=F(n-1)+F(n-2) for n>1.",
+    "userTask": "Complete fibonacci(N) that returns the N-th Fibonacci number.",
+    "inputFormat": "An integer N.",
+    "outputFormat": "Return an integer representing the N-th Fibonacci number.",
+    "examples": [
+      { "input": "5", "output": "5" },
+      { "input": "10", "output": "55" }
+    ],
+    "functionName": "fibonacci",
+    "parameters": ["N"],
+    "testCases": [
+      { "input": "5", "output": "5" },
+      { "input": "10", "output": "55" },
+      { "input": "0", "output": "0" }
+    ]
+  },
+  {
+    "id": 43,
+    "title": "Reverse Integer",
+    "description": "Given an integer N, reverse its digits. Negative numbers should retain the negative sign.",
+    "userTask": "Complete reverse_integer(N) that returns the reversed integer.",
+    "inputFormat": "An integer N.",
+    "outputFormat": "Return the reversed integer.",
+    "examples": [
+      { "input": "123", "output": "321" },
+      { "input": "-456", "output": "-654" }
+    ],
+    "functionName": "reverse_integer",
+    "parameters": ["N"],
+    "testCases": [
+      { "input": "123", "output": "321" },
+      { "input": "-456", "output": "-654" },
+      { "input": "1000", "output": "1" }
+    ]
+  },
+  {
+    "id": 44,
+    "title": "Count Vowels in String",
+    "description": "Given a string S, count the number of vowels (a, e, i, o, u) present in it.",
+    "userTask": "Complete count_vowels(S) that returns the count of vowels in S.",
+    "inputFormat": "A string S.",
+    "outputFormat": "Return an integer representing the number of vowels.",
+    "examples": [
+      { "input": "hello", "output": "2" },
+      { "input": "xyz", "output": "0" }
+    ],
+    "functionName": "count_vowels",
+    "parameters": ["S"],
+    "testCases": [
+      { "input": "hello", "output": "2" },
+      { "input": "xyz", "output": "0" },
+      { "input": "AEiou", "output": "5" }
+    ]
+  },
+  {
+    "id": 45,
+    "title": "Check for Palindrome String",
+    "description": "Given a string S, determine whether it is a palindrome. Palindrome reads the same forwards and backwards.",
+    "userTask": "Complete is_palindrome_string(S) that returns True if S is a palindrome, otherwise False.",
+    "inputFormat": "A string S.",
+    "outputFormat": "Return True if S is palindrome, otherwise False.",
+    "examples": [
+      { "input": "radar", "output": "True" },
+      { "input": "hello", "output": "False" }
+    ],
+    "functionName": "is_palindrome_string",
+    "parameters": ["S"],
+    "testCases": [
+      { "input": "radar", "output": "True" },
+      { "input": "hello", "output": "False" },
+      { "input": "level", "output": "True" }
+    ]
+  },
+  {
+    "id": 46,
+    "title": "Merge Two Sorted Arrays",
+    "description": "Given two sorted arrays A and B, merge them into a single sorted array.",
+    "userTask": "Complete merge_sorted(A,B) that returns the merged sorted array.",
+    "inputFormat": "Two lists of integers A and B, both sorted in ascending order.",
+    "outputFormat": "Return a list of integers sorted in ascending order.",
+    "examples": [
+      { "input": "[1,3,5],[2,4,6]", "output": "[1,2,3,4,5,6]" },
+      { "input": "[0],[0]", "output": "[0,0]" }
+    ],
+    "functionName": "merge_sorted",
+    "parameters": ["A","B"],
+    "testCases": [
+      { "input": "[1,3,5],[2,4,6]", "output": "[1,2,3,4,5,6]" },
+      { "input": "[0],[0]", "output": "[0,0]" },
+      { "input": "[],[1,2,3]", "output": "[1,2,3]" }
+    ]
+  },
+  {
+    "id": 47,
+    "title": "Maximum Subarray Sum",
+    "description": "Given a list of integers, find the sum of the contiguous subarray with the largest sum (Kadane's Algorithm).",
+    "userTask": "Complete max_subarray_sum(arr) that returns the maximum sum of any contiguous subarray.",
+    "inputFormat": "A list of integers arr.",
+    "outputFormat": "Return an integer representing the maximum subarray sum.",
+    "examples": [
+      { "input": "[-2,1,-3,4,-1,2,1,-5,4]", "output": "6" },
+      { "input": "[1,2,3,4]", "output": "10" }
+    ],
+    "functionName": "max_subarray_sum",
+    "parameters": ["arr"],
+    "testCases": [
+      { "input": "[-2,1,-3,4,-1,2,1,-5,4]", "output": "6" },
+      { "input": "[1,2,3,4]", "output": "10" },
+      { "input": "[-1,-2,-3]", "output": "-1" }
+    ]
+  },
+  {
+    "id": 48,
+    "title": "Rotate Array",
+    "description": "Given a list of integers arr and an integer k, rotate arr to the right by k steps.",
+    "userTask": "Complete rotate_array(arr,k) that returns the rotated array.",
+    "inputFormat": "A list of integers arr and an integer k.",
+    "outputFormat": "Return the rotated list of integers.",
+    "examples": [
+      { "input": "[1,2,3,4,5],2", "output": "[4,5,1,2,3]" },
+      { "input": "[1,2,3],3", "output": "[1,2,3]" }
+    ],
+    "functionName": "rotate_array",
+    "parameters": ["arr","k"],
+    "testCases": [
+      { "input": "[1,2,3,4,5],2", "output": "[4,5,1,2,3]" },
+      { "input": "[1,2,3],3", "output": "[1,2,3]" },
+      { "input": "[1,2],1", "output": "[2,1]" }
+    ]
+  },
+  {
+    "id": 49,
+    "title": "Check Subsequence",
+    "description": "Given two strings S1 and S2, determine if S1 is a subsequence of S2. A string S1 is a subsequence of S2 if S1 can be derived by deleting some characters of S2 without changing the order.",
+    "userTask": "Complete is_subsequence(S1,S2) that returns True if S1 is a subsequence of S2, otherwise False.",
+    "inputFormat": "Two strings S1 and S2.",
+    "outputFormat": "Return True if S1 is a subsequence of S2, otherwise False.",
+    "examples": [
+      { "input": "abc,ahbgdc", "output": "True" },
+      { "input": "axc,ahbgdc", "output": "False" }
+    ],
+    "functionName": "is_subsequence",
+    "parameters": ["S1","S2"],
+    "testCases": [
+      { "input": "abc,ahbgdc", "output": "True" },
+      { "input": "axc,ahbgdc", "output": "False" },
+      { "input": "ace,abcde", "output": "True" }
+    ]
+  },
+  {
+    "id": 50,
+    "title": "Number of Ways to Select 3 Students",
+    "description": "You are given the marks of n students. Your task is to determine the number of ways to select three different students who have exactly the same marks. Two students are considered different if they have different indices. The order of selection does not matter that means we are forming combinations, not permutations.",
+    "userTask": "Complete count_ways_same_marks(marks) that returns the number of valid ways to choose three students with the same marks.",
+    "inputFormat": "A list of integers marks representing the marks of n students.",
+    "outputFormat": "Return an integer representing the number of valid ways.",
+    "examples": [
+      { "input": "[10,20,10,30,10,20]", "output": "1" },
+      { "input": "[10,20,10,10,20,30,30,20,20,10,30]", "output": "9" }
+    ],
+    "functionName": "count_ways_same_marks",
+    "parameters": ["marks"],
+    "testCases": [
+      { "input": "[10,20,10,30,10,20]", "output": "1" },
+      { "input": "[10,20,10,10,20,30,30,20,20,10,30]", "output": "9" },
+      { "input": "[1,1,1,1]", "output": "4" }
     ]
   }
 ]
+
+
