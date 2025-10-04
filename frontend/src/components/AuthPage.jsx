@@ -19,7 +19,7 @@ export const AuthPage = () => {
   const handleSignup = async () => {
     if (!signupUsername || !signupEmail || !signupPassword) return alert("Please fill in all fields.");
     const usersRef = collection(db, "users");
-    const q = query(users-ref, where("username", "==", signupUsername));
+    const q = query(usersRef, where("username", "==", signupUsername));
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) return alert("This username is already taken.");
     try {
