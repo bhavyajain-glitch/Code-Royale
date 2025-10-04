@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { auth, db } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore'; // Import Firestore functions
 import { io } from 'socket.io-client';
-import axios from 'axios';
 
-// Import your new components
+// Import your components
 import { AuthPage } from './components/AuthPage';
 import { HomePage } from './components/HomePage';
 import { BattleRoom } from './components/BattleRoom';
@@ -15,6 +15,7 @@ export const socket = io(SERVER_URL);
 
 function App() {
   const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null); // State for Firestore profile
   const [loading, setLoading] = useState(true);
   const [inRoom, setInRoom] = useState(false);
   const [problem, setProblem] = useState(null);
@@ -22,8 +23,24 @@ function App() {
   const [view, setView] = useState('home');
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    // This effect now handles fetching the user's profile
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
+      
+      if (currentUser) {
+        // User is logged in, fetch their profile from Firestore
+        const docRef = doc(db, "users", currentUser.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setUserProfile(docSnap.data());
+        } else {
+          console.log("No such user profile in Firestore!");
+        }
+      } else {
+        // User is logged out, clear the profile
+        setUserProfile(null);
+      }
+      
       setLoading(false);
     });
     
@@ -44,14 +61,15 @@ function App() {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
+  // Updated to pass the userProfile object to child components
   const renderView = () => {
     if (inRoom) {
-      return <BattleRoom problem={problem} roomId={roomId} user={user} />;
+      return <BattleRoom problem={problem} roomId={roomId} userProfile={userProfile} />;
     }
     if (view === 'leaderboard') {
       return <LeaderboardPage setView={setView} serverUrl={SERVER_URL} />;
     }
-    return <HomePage user={user} setView={setView} setRoomId={setRoomId} />;
+    return <HomePage userProfile={userProfile} setView={setView} setRoomId={setRoomId} />;
   };
 
   return (

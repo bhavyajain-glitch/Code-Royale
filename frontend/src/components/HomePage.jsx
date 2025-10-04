@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase';
-import { signOut } from 'firebase/auth'; // Corrected import
+import { signOut } from 'firebase/auth';
 import { socket } from '../App';
 import { ThemedPanel, ThemedButton } from './ThemedComponents';
 import { FaCrown } from 'react-icons/fa';
 
-export const HomePage = ({ user, setView, setRoomId }) => {
+export const HomePage = ({ userProfile, setView, setRoomId }) => {
   const [roomIdInput, setRoomIdInput] = useState('');
 
   useEffect(() => {
@@ -33,7 +33,8 @@ export const HomePage = ({ user, setView, setRoomId }) => {
   return (
     <ThemedPanel className="w-full max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-2xl">Welcome, {user.email}</h3>
+        {/* This line is now updated to display the username */}
+        <h3 className="text-2xl">Welcome, {userProfile?.username}</h3>
         <div>
           <ThemedButton onClick={() => setView('leaderboard')} className="text-lg py-2 mr-4">
             <FaCrown className="inline mr-2" />
