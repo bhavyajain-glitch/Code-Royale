@@ -1,5 +1,7 @@
 const { auth } = require('../services/firebaseAdmin');
 const problems = require('../data/problems.json');
+const axios = require('axios');
+const { recordBattleOutcome } = require('../services/battleService');
 
 // In-memory storage for rooms. A real app would use Redis or a database.
 const rooms = {};
@@ -18,6 +20,7 @@ function initializeSocket(io) {
   io.on('connection', (socket) => {
     console.log(`🔌 New client connected: ${socket.id}`);
 
+    // createRoom and joinRoom handlers are unchanged.
     socket.on('createRoom', async ({ idToken }) => {
       const decodedToken = await verifyToken(idToken);
       if (!decodedToken) {
@@ -48,21 +51,15 @@ function initializeSocket(io) {
       }
 
       const room = rooms[roomId];
-
-      // Make sure the room exists before proceeding
       if (!room) {
         return socket.emit('error', { message: 'Room does not exist.' });
       }
       
-      // --- BUG FIX ---
-      // Check if the user trying to join is already one of the players in the room.
       const playerAlreadyInRoom = room.players.some(player => player.uid === decodedToken.uid);
-
       if (playerAlreadyInRoom) {
         console.log(`[Room ${roomId}] ${decodedToken.email} is already in this room.`);
-        return; // Stop execution to prevent re-joining
+        return;
       }
-      // --- END FIX ---
 
       if (room.players.length < 2) {
         socket.join(roomId);
@@ -81,6 +78,86 @@ function initializeSocket(io) {
         }
       } else {
         socket.emit('error', { message: 'Room is full.' });
+      }
+    });
+    
+    // --- UPDATED Code Submission Handler for Python ---
+    socket.on('submitCode', async ({ roomId, code }) => {
+      const room = rooms[roomId];
+      if (!room || !room.problem) return;
+      
+      const submittingPlayer = room.players.find(p => p.socketId === socket.id);
+      if (!submittingPlayer) return;
+      
+      console.log(`[Room ${roomId}] Python code submission from ${submittingPlayer.email}`);
+      
+      const problem = room.problem;
+      const testCase = problem.testCases[0];
+
+      // **CHANGE**: Construct a full Python script to be executed.
+      const executionScript = `
+# User's submitted function
+${code}
+
+# Call the function with the test case and print the result
+print(${problem.functionName}(${testCase.input}))
+      `;
+
+      try {
+        const submissionResponse = await axios.post(
+          'https://judge0-ce.p.rapidapi.com/submissions',
+          {
+            language_id: 71, // **CHANGE**: 71 is the ID for Python 3
+            source_code: executionScript, // **CHANGE**: Send the full script
+          },
+          {
+            params: { base64_encoded: 'false', fields: '*' },
+            headers: {
+              'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+              'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+            }
+          }
+        );
+        
+        const submissionToken = submissionResponse.data.token;
+        
+        // Polling logic remains the same.
+        let resultResponse;
+        do {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          resultResponse = await axios.get(
+            `https://judge0-ce.p.rapidapi.com/submissions/${submissionToken}`,
+            {
+              headers: {
+                'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+                'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+              }
+            }
+          );
+        } while (resultResponse.data.status.id <= 2);
+
+        // Result checking logic remains the same.
+        const output = resultResponse.data.stdout ? resultResponse.data.stdout.trim() : "";
+        
+        // **IMPROVEMENT**: Normalize output to prevent issues with spacing (e.g., "[0, 1]" vs "[0,1]")
+        const formattedOutput = output.replace(/\s/g, '');
+        const formattedExpectedOutput = testCase.output.replace(/\s/g, '');
+
+        if (formattedOutput === formattedExpectedOutput) {
+          console.log(`[Room ${roomId}] Correct solution by ${submittingPlayer.email}`);
+          await recordBattleOutcome(roomId, submittingPlayer, room.players);
+          io.to(roomId).emit('gameOver', { winner: submittingPlayer });
+          delete rooms[roomId];
+        } else {
+          console.log(`[Room ${roomId}] Incorrect solution by ${submittingPlayer.email}`);
+          socket.emit('testResult', { 
+            success: false, 
+            message: `Incorrect. Expected: ${testCase.output}, Got: ${output || resultResponse.data.stderr || 'No output'}`
+          });
+        }
+      } catch (error) {
+        console.error('Error with Judge0 API:', error.response ? error.response.data : error.message);
+        socket.emit('testResult', { success: false, message: 'Error executing code.' });
       }
     });
 

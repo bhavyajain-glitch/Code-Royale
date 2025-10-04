@@ -27,6 +27,11 @@ app.use(express.json());
 const healthRoutes = require('./src/api/routes/healthRoutes');
 app.use('/api', healthRoutes);
 
+const leaderboardRoutes = require('./src/api/routes/leaderboardRoutes'); // Add this line
+
+app.use('/api', healthRoutes);
+app.use('/api', leaderboardRoutes);
+
 // --- Socket.IO Connection Handling ---
 // TODO: We will set up our socket logic here
 const { initializeSocket } = require('./src/sockets/socketManager');
