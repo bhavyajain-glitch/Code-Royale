@@ -1,4 +1,5 @@
 /* In frontend/src/App.css */
+@import "tailwindcss";
 body {
   background-color: #282c34;
   color: white;
