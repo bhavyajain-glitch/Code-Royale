@@ -10,13 +10,13 @@ const { Server } = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
+
 const io = new Server(server, {
-    cors: {
-      // We'll replace this with the Vercel URL in production
-      origin: 'http://localhost:5173', 
-      methods: ['GET', 'POST'],
-    },
-  });
+  cors: {
+    origin: [process.env.FRONTEND_URL, "http://localhost:5173"], // Add your live URL
+    methods: ["GET", "POST"],
+  },
+});
 
   
 app.use(cors());

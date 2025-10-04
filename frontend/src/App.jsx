@@ -17,7 +17,8 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-python';
 import 'prismjs/themes/prism-tomorrow.css'; // A nice dark theme for the editor
 
-const socket = io('http://localhost:4000');
+const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:4000';
+const socket = io(SERVER_URL);
 
 
 function App() {
@@ -232,7 +233,7 @@ const BattleRoom = ({ problem, roomId }) => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-      axios.get('http://localhost:4000/api/leaderboard')
+      axios.get(`${SERVER_URL}/api/leaderboard`)
         .then(response => {
           setLeaderboard(response.data);
         })

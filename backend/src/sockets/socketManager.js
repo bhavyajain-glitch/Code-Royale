@@ -26,10 +26,8 @@ function initializeSocket(io) {
       if (!decodedToken) {
         return socket.emit('error', { message: 'Invalid authentication token.' });
       }
-
       const roomId = Math.random().toString(36).substring(2, 8);
       socket.join(roomId);
-      
       rooms[roomId] = {
         roomId,
         players: [{ 
@@ -39,7 +37,6 @@ function initializeSocket(io) {
         }],
         problem: null
       };
-
       socket.emit('roomCreated', { roomId });
       console.log(`[Room ${roomId}] Created by ${decodedToken.email} (${decodedToken.uid})`);
     });
@@ -49,18 +46,15 @@ function initializeSocket(io) {
       if (!decodedToken) {
         return socket.emit('error', { message: 'Invalid authentication token.' });
       }
-
       const room = rooms[roomId];
       if (!room) {
         return socket.emit('error', { message: 'Room does not exist.' });
       }
-      
       const playerAlreadyInRoom = room.players.some(player => player.uid === decodedToken.uid);
       if (playerAlreadyInRoom) {
         console.log(`[Room ${roomId}] ${decodedToken.email} is already in this room.`);
         return;
       }
-
       if (room.players.length < 2) {
         socket.join(roomId);
         room.players.push({ 
@@ -69,7 +63,6 @@ function initializeSocket(io) {
           email: decodedToken.email 
         });
         console.log(`[Room ${roomId}] ${decodedToken.email} joined.`);
-
         if (room.players.length === 2) {
           const problem = problems[Math.floor(Math.random() * problems.length)];
           room.problem = problem;
@@ -81,7 +74,7 @@ function initializeSocket(io) {
       }
     });
     
-    // --- UPDATED Code Submission Handler for Python ---
+    // --- UPDATED Code Submission Handler for Multiple Test Cases ---
     socket.on('submitCode', async ({ roomId, code }) => {
       const room = rooms[roomId];
       if (!room || !room.problem) return;
@@ -89,72 +82,67 @@ function initializeSocket(io) {
       const submittingPlayer = room.players.find(p => p.socketId === socket.id);
       if (!submittingPlayer) return;
       
-      console.log(`[Room ${roomId}] Python code submission from ${submittingPlayer.email}`);
-      
+      console.log(`[Room ${roomId}] Code submission from ${submittingPlayer.email}`);
       const problem = room.problem;
-      const testCase = problem.testCases[0];
 
-      // **CHANGE**: Construct a full Python script to be executed.
-      const executionScript = `
+      try {
+        // Loop through each test case for the problem.
+        for (const testCase of problem.testCases) {
+          const executionScript = `
 # User's submitted function
 ${code}
 
-# Call the function with the test case and print the result
+# Call the function and print the result
 print(${problem.functionName}(${testCase.input}))
-      `;
+          `;
 
-      try {
-        const submissionResponse = await axios.post(
-          'https://judge0-ce.p.rapidapi.com/submissions',
-          {
-            language_id: 71, // **CHANGE**: 71 is the ID for Python 3
-            source_code: executionScript, // **CHANGE**: Send the full script
-          },
-          {
-            params: { base64_encoded: 'false', fields: '*' },
-            headers: {
-              'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
-              'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
-            }
-          }
-        );
-        
-        const submissionToken = submissionResponse.data.token;
-        
-        // Polling logic remains the same.
-        let resultResponse;
-        do {
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          resultResponse = await axios.get(
-            `https://judge0-ce.p.rapidapi.com/submissions/${submissionToken}`,
+          const submissionResponse = await axios.post(
+            'https://judge0-ce.p.rapidapi.com/submissions',
+            { language_id: 71, source_code: executionScript },
             {
+              params: { base64_encoded: 'false', fields: '*' },
               headers: {
                 'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
                 'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
               }
             }
           );
-        } while (resultResponse.data.status.id <= 2);
+          
+          const submissionToken = submissionResponse.data.token;
+          
+          let resultResponse;
+          do {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            resultResponse = await axios.get(
+              `https://judge0-ce.p.rapidapi.com/submissions/${submissionToken}`,
+              { headers: {
+                  'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+                  'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+              }}
+            );
+          } while (resultResponse.data.status.id <= 2);
 
-        // Result checking logic remains the same.
-        const output = resultResponse.data.stdout ? resultResponse.data.stdout.trim() : "";
-        
-        // **IMPROVEMENT**: Normalize output to prevent issues with spacing (e.g., "[0, 1]" vs "[0,1]")
-        const formattedOutput = output.replace(/\s/g, '');
-        const formattedExpectedOutput = testCase.output.replace(/\s/g, '');
+          const output = resultResponse.data.stdout ? resultResponse.data.stdout.trim() : "";
+          const formattedOutput = output.replace(/\s/g, '');
+          const formattedExpectedOutput = testCase.output.replace(/\s/g, '');
 
-        if (formattedOutput === formattedExpectedOutput) {
-          console.log(`[Room ${roomId}] Correct solution by ${submittingPlayer.email}`);
-          await recordBattleOutcome(roomId, submittingPlayer, room.players);
-          io.to(roomId).emit('gameOver', { winner: submittingPlayer });
-          delete rooms[roomId];
-        } else {
-          console.log(`[Room ${roomId}] Incorrect solution by ${submittingPlayer.email}`);
-          socket.emit('testResult', { 
-            success: false, 
-            message: `Incorrect. Expected: ${testCase.output}, Got: ${output || resultResponse.data.stderr || 'No output'}`
-          });
+          // If any test case fails, stop and notify the user.
+          if (formattedOutput !== formattedExpectedOutput) {
+            console.log(`[Room ${roomId}] Incorrect solution on input: ${testCase.input}`);
+            socket.emit('testResult', { 
+              success: false, 
+              message: `Failed on test case with input: ${testCase.input}\nExpected: ${testCase.output}, Got: ${output || resultResponse.data.stderr || 'No output'}`
+            });
+            return; // Exit the function early on failure.
+          }
         }
+
+        // If the loop completes, it means all test cases passed.
+        console.log(`[Room ${roomId}] Correct solution by ${submittingPlayer.email}. All test cases passed!`);
+        await recordBattleOutcome(roomId, submittingPlayer, room.players);
+        io.to(roomId).emit('gameOver', { winner: submittingPlayer });
+        delete rooms[roomId]; // Clean up the room from memory.
+
       } catch (error) {
         console.error('Error with Judge0 API:', error.response ? error.response.data : error.message);
         socket.emit('testResult', { success: false, message: 'Error executing code.' });
