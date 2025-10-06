@@ -74,7 +74,7 @@ function initializeSocket(io) {
       }
     });
     
-    // --- UPDATED Code Submission Handler for Multiple Test Cases ---
+    // Code Submission Handler
     socket.on('submitCode', async ({ roomId, code }) => {
       const room = rooms[roomId];
       if (!room || !room.problem) return;
@@ -86,7 +86,6 @@ function initializeSocket(io) {
       const problem = room.problem;
 
       try {
-        // Loop through each test case for the problem.
         for (const testCase of problem.testCases) {
           const executionScript = `
 # User's submitted function
@@ -126,34 +125,55 @@ print(${problem.functionName}(${testCase.input}))
           const formattedOutput = output.replace(/\s/g, '');
           const formattedExpectedOutput = testCase.output.replace(/\s/g, '');
 
-          // If any test case fails, stop and notify the user.
           if (formattedOutput !== formattedExpectedOutput) {
             console.log(`[Room ${roomId}] Incorrect solution on input: ${testCase.input}`);
             socket.emit('testResult', { 
               success: false, 
               message: `Failed on test case with input: ${testCase.input}\nExpected: ${testCase.output}, Got: ${output || resultResponse.data.stderr || 'No output'}`
             });
-            return; // Exit the function early on failure.
+            return;
           }
         }
 
-        // If the loop completes, it means all test cases passed.
         console.log(`[Room ${roomId}] Correct solution by ${submittingPlayer.email}. All test cases passed!`);
         await recordBattleOutcome(roomId, submittingPlayer, room.players);
         io.to(roomId).emit('gameOver', { winner: submittingPlayer });
-        delete rooms[roomId]; // Clean up the room from memory.
+        delete rooms[roomId];
 
       } catch (error) {
-        console.error('Error with Judge0 API:', error.response ? error.response.data : error.message);
+        // --- THIS IS THE CRITICAL LOGGING LINE ---
+        console.error('--- DETAILED JUDGE0 API ERROR ---', error.response ? error.response.data : error.message);
         socket.emit('testResult', { success: false, message: 'Error executing code.' });
       }
     });
 
+    // Disconnect Handler
     socket.on('disconnect', () => {
       console.log(`🔥 Client disconnected: ${socket.id}`);
-      // TODO: Add logic to handle a player disconnecting from a room mid-game.
+      
+      let roomIdToDelete = null;
+      for (const roomId in rooms) {
+        const room = rooms[roomId];
+        const playerInRoom = room.players.find(p => p.socketId === socket.id);
+
+        if (playerInRoom) {
+          if (room.players.length === 2) {
+            const winner = room.players.find(p => p.socketId !== socket.id);
+            console.log(`[Room ${roomId}] Player disconnected. ${winner.email} wins by forfeit.`);
+            recordBattleOutcome(roomId, winner, room.players);
+            io.to(winner.socketId).emit('opponentLeft', { winner });
+          }
+          roomIdToDelete = roomId;
+          break;
+        }
+      }
+      if (roomIdToDelete) {
+        delete rooms[roomIdToDelete];
+        console.log(`[Room ${roomIdToDelete}] Cleaned up after disconnect.`);
+      }
     });
   });
 }
 
 module.exports = { initializeSocket };
+

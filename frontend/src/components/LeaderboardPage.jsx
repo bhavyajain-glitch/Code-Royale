@@ -15,7 +15,7 @@ const LeaderboardItem = ({ player, rank }) => {
       <div className="flex-shrink-0 mr-4 text-xl">
         {rank <= 3 ? <FaCrown className={rankColor} /> : <FaShieldAlt className={rankColor} />}
       </div>
-      <span className="flex-grow text-xl text-white">{player.email}</span>
+      <span className="flex-grow text-xl text-white">{player.username}</span>
       <span className="text-xl font-bold text-clash-secondary">{player.score} pts</span>
     </div>
   );

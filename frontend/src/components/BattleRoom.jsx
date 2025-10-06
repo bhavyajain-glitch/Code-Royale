@@ -3,24 +3,37 @@ import { socket } from '../App';
 import { ThemedPanel, ThemedButton } from './ThemedComponents';
 import Editor from '@monaco-editor/react';
 
-export const BattleRoom = ({ problem, roomId, user }) => {
+export const BattleRoom = ({ problem, roomId, userProfile }) => {
   const params = problem.parameters.join(', ');
   const defaultCode = `# Your code here...\ndef ${problem.functionName}(${params}):\n\tpass`;
   
   const [code, setCode] = useState(defaultCode);
   const [result, setResult] = useState('');
   const [winner, setWinner] = useState(null);
+  const [gameOverReason, setGameOverReason] = useState(''); // To track how the game ended
 
   useEffect(() => {
-    const onGameOver = ({ winner }) => setWinner(winner);
-    const onTestResult = ({ message }) => setResult(message);
+    // Handler for a normal win
+    const onGameOver = ({ winner }) => {
+      setWinner(winner);
+      setGameOverReason('solution');
+    };
+
+    // Handler for a win by forfeit
+    const onOpponentLeft = ({ winner }) => {
+      setWinner(winner);
+      setGameOverReason('forfeit');
+    };
     
+    // Listen for both events
     socket.on('gameOver', onGameOver);
-    socket.on('testResult', onTestResult);
+    socket.on('opponentLeft', onOpponentLeft);
+    socket.on('testResult', ({ message }) => setResult(message));
     
     return () => {
       socket.off('gameOver', onGameOver);
-      socket.off('testResult', onTestResult);
+      socket.off('opponentLeft', onOpponentLeft);
+      socket.off('testResult');
     };
   }, []);
 
@@ -30,11 +43,22 @@ export const BattleRoom = ({ problem, roomId, user }) => {
   };
 
   if (winner) {
-    const isWinner = winner.uid === user.uid;
+    // FIX: Use optional chaining (?.) to prevent crash if userProfile is not yet loaded
+    const isWinner = winner.uid === userProfile?.uid; 
+    let title = '';
+    
+    if (isWinner) {
+      // Show a different message depending on how the game was won
+      title = gameOverReason === 'forfeit' ? 'Opponent Left, You Win!' : '🎉 Victory! 🎉';
+    } else {
+      title = 'Defeat';
+    }
+
     return (
       <ThemedPanel className="max-w-2xl mx-auto text-center">
-        <h2 className="text-5xl mb-4">{isWinner ? "🎉 Victory! 🎉" : "Defeat"}</h2>
-        <p className="text-2xl">The winner is: <span className="text-clash-secondary">{winner.email}</span></p>
+        <h2 className="text-5xl mb-4">{title}</h2>
+        {/* Display the winner's username */}
+        <p className="text-2xl">The winner is: <span className="text-clash-secondary">{winner.username || winner.email}</span></p>
         <ThemedButton onClick={() => window.location.reload()} className="mt-8">
           Play Again
         </ThemedButton>
@@ -80,14 +104,8 @@ export const BattleRoom = ({ problem, roomId, user }) => {
       </ThemedPanel>
 
       <div className="bg-clash-wood p-2 border-8 border-double border-clash-gold/60 rounded-lg shadow-clash-panel">
-        
-        {/* --- ANTI-PASTE WRAPPER --- */}
-        {/* This div intercepts the paste event and prevents it. */}
         <div 
-          onPaste={(e) => {
-            e.preventDefault();
-            // You could optionally show a notification here
-          }} 
+          onPaste={(e) => e.preventDefault()} 
           title="Pasting code is disabled for this challenge."
         >
           <Editor
@@ -99,12 +117,10 @@ export const BattleRoom = ({ problem, roomId, user }) => {
             options={{
               fontSize: 16,
               minimap: { enabled: false },
-              contextmenu: false, // Disabling right-click menu also helps
+              contextmenu: false,
             }}
           />
         </div>
-        {/* --- END WRAPPER --- */}
-        
       </div>
       <ThemedButton onClick={handleSubmit} className="mt-6 w-full text-2xl py-4">
         Submit Code
@@ -117,3 +133,4 @@ export const BattleRoom = ({ problem, roomId, user }) => {
     </div>
   );
 };
+
