@@ -3,29 +3,27 @@ import { socket } from '../App';
 import { ThemedPanel, ThemedButton } from './ThemedComponents';
 import Editor from '@monaco-editor/react';
 
-export const BattleRoom = ({ problem, roomId, userProfile }) => {
+// The component now accepts the `user` prop for a reliable UID check.
+export const BattleRoom = ({ problem, roomId, user, userProfile }) => {
   const params = problem.parameters.join(', ');
   const defaultCode = `# Your code here...\ndef ${problem.functionName}(${params}):\n\tpass`;
   
   const [code, setCode] = useState(defaultCode);
   const [result, setResult] = useState('');
   const [winner, setWinner] = useState(null);
-  const [gameOverReason, setGameOverReason] = useState(''); // To track how the game ended
+  const [gameOverReason, setGameOverReason] = useState('');
 
   useEffect(() => {
-    // Handler for a normal win
     const onGameOver = ({ winner }) => {
       setWinner(winner);
       setGameOverReason('solution');
     };
 
-    // Handler for a win by forfeit
     const onOpponentLeft = ({ winner }) => {
       setWinner(winner);
       setGameOverReason('forfeit');
     };
     
-    // Listen for both events
     socket.on('gameOver', onGameOver);
     socket.on('opponentLeft', onOpponentLeft);
     socket.on('testResult', ({ message }) => setResult(message));
@@ -43,12 +41,10 @@ export const BattleRoom = ({ problem, roomId, userProfile }) => {
   };
 
   if (winner) {
-    // FIX: Use optional chaining (?.) to prevent crash if userProfile is not yet loaded
-    const isWinner = winner.uid === userProfile?.uid; 
+    const isWinner = winner.uid === user?.uid; 
     let title = '';
     
     if (isWinner) {
-      // Show a different message depending on how the game was won
       title = gameOverReason === 'forfeit' ? 'Opponent Left, You Win!' : '🎉 Victory! 🎉';
     } else {
       title = 'Defeat';
@@ -57,8 +53,8 @@ export const BattleRoom = ({ problem, roomId, userProfile }) => {
     return (
       <ThemedPanel className="max-w-2xl mx-auto text-center">
         <h2 className="text-5xl mb-4">{title}</h2>
-        {/* Display the winner's username */}
-        <p className="text-2xl">The winner is: <span className="text-clash-secondary">{winner.username || winner.email}</span></p>
+        {/* This line is now fixed to only show the username */}
+        <p className="text-2xl">The winner is: <span className="text-clash-secondary">{winner.username}</span></p>
         <ThemedButton onClick={() => window.location.reload()} className="mt-8">
           Play Again
         </ThemedButton>

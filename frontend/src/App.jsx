@@ -64,7 +64,9 @@ function App() {
   // Updated to pass the userProfile object to child components
   const renderView = () => {
     if (inRoom) {
-      return <BattleRoom problem={problem} roomId={roomId} userProfile={userProfile} />;
+      // --- THIS IS THE FIX ---
+      // Pass the `user` object in addition to `userProfile`.
+      return <BattleRoom problem={problem} roomId={roomId} user={user} userProfile={userProfile} />;
     }
     if (view === 'leaderboard') {
       return <LeaderboardPage setView={setView} serverUrl={SERVER_URL} />;

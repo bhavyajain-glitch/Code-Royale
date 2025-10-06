@@ -1,4 +1,4 @@
-const { auth } = require('../services/firebaseAdmin');
+const { auth, db } = require('../services/firebaseAdmin'); // Import db
 const problems = require('../data/problems.json');
 const axios = require('axios');
 const { recordBattleOutcome } = require('../services/battleService');
@@ -20,12 +20,16 @@ function initializeSocket(io) {
   io.on('connection', (socket) => {
     console.log(`🔌 New client connected: ${socket.id}`);
 
-    // createRoom and joinRoom handlers are unchanged.
     socket.on('createRoom', async ({ idToken }) => {
       const decodedToken = await verifyToken(idToken);
       if (!decodedToken) {
         return socket.emit('error', { message: 'Invalid authentication token.' });
       }
+
+      // --- NEW: Fetch username from Firestore ---
+      const userDoc = await db.collection('users').doc(decodedToken.uid).get();
+      const username = userDoc.exists ? userDoc.data().username : decodedToken.email;
+
       const roomId = Math.random().toString(36).substring(2, 8);
       socket.join(roomId);
       rooms[roomId] = {
@@ -33,12 +37,13 @@ function initializeSocket(io) {
         players: [{ 
           socketId: socket.id, 
           uid: decodedToken.uid,
-          email: decodedToken.email 
+          email: decodedToken.email,
+          username: username // Add username to the player object
         }],
         problem: null
       };
       socket.emit('roomCreated', { roomId });
-      console.log(`[Room ${roomId}] Created by ${decodedToken.email} (${decodedToken.uid})`);
+      console.log(`[Room ${roomId}] Created by ${username}`);
     });
 
     socket.on('joinRoom', async ({ idToken, roomId }) => {
@@ -46,13 +51,18 @@ function initializeSocket(io) {
       if (!decodedToken) {
         return socket.emit('error', { message: 'Invalid authentication token.' });
       }
+      
+      // --- NEW: Fetch username from Firestore ---
+      const userDoc = await db.collection('users').doc(decodedToken.uid).get();
+      const username = userDoc.exists ? userDoc.data().username : decodedToken.email;
+      
       const room = rooms[roomId];
       if (!room) {
         return socket.emit('error', { message: 'Room does not exist.' });
       }
       const playerAlreadyInRoom = room.players.some(player => player.uid === decodedToken.uid);
       if (playerAlreadyInRoom) {
-        console.log(`[Room ${roomId}] ${decodedToken.email} is already in this room.`);
+        console.log(`[Room ${roomId}] ${username} is already in this room.`);
         return;
       }
       if (room.players.length < 2) {
@@ -60,9 +70,10 @@ function initializeSocket(io) {
         room.players.push({ 
           socketId: socket.id, 
           uid: decodedToken.uid,
-          email: decodedToken.email 
+          email: decodedToken.email,
+          username: username // Add username to the player object
         });
-        console.log(`[Room ${roomId}] ${decodedToken.email} joined.`);
+        console.log(`[Room ${roomId}] ${username} joined.`);
         if (room.players.length === 2) {
           const problem = problems[Math.floor(Math.random() * problems.length)];
           room.problem = problem;
@@ -74,7 +85,6 @@ function initializeSocket(io) {
       }
     });
     
-    // Code Submission Handler
     socket.on('submitCode', async ({ roomId, code }) => {
       const room = rooms[roomId];
       if (!room || !room.problem) return;
@@ -82,7 +92,7 @@ function initializeSocket(io) {
       const submittingPlayer = room.players.find(p => p.socketId === socket.id);
       if (!submittingPlayer) return;
       
-      console.log(`[Room ${roomId}] Code submission from ${submittingPlayer.email}`);
+      console.log(`[Room ${roomId}] Code submission from ${submittingPlayer.username}`);
       const problem = room.problem;
 
       try {
@@ -135,19 +145,17 @@ print(${problem.functionName}(${testCase.input}))
           }
         }
 
-        console.log(`[Room ${roomId}] Correct solution by ${submittingPlayer.email}. All test cases passed!`);
+        console.log(`[Room ${roomId}] Correct solution by ${submittingPlayer.username}. All test cases passed!`);
         await recordBattleOutcome(roomId, submittingPlayer, room.players);
         io.to(roomId).emit('gameOver', { winner: submittingPlayer });
         delete rooms[roomId];
 
       } catch (error) {
-        // --- THIS IS THE CRITICAL LOGGING LINE ---
         console.error('--- DETAILED JUDGE0 API ERROR ---', error.response ? error.response.data : error.message);
         socket.emit('testResult', { success: false, message: 'Error executing code.' });
       }
     });
 
-    // Disconnect Handler
     socket.on('disconnect', () => {
       console.log(`🔥 Client disconnected: ${socket.id}`);
       
@@ -159,7 +167,7 @@ print(${problem.functionName}(${testCase.input}))
         if (playerInRoom) {
           if (room.players.length === 2) {
             const winner = room.players.find(p => p.socketId !== socket.id);
-            console.log(`[Room ${roomId}] Player disconnected. ${winner.email} wins by forfeit.`);
+            console.log(`[Room ${roomId}] Player disconnected. ${winner.username} wins by forfeit.`);
             recordBattleOutcome(roomId, winner, room.players);
             io.to(winner.socketId).emit('opponentLeft', { winner });
           }
